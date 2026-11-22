@@ -1,0 +1,19 @@
+# Python and test caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+
+# Local environments
+.venv/
+venv/
+env/
+.python/
+
+# Local editor/system artifacts and temporary work
+.DS_Store
+.tools/
+tmp/
+*.log
+
+# Do not ignore required evidence: prices.csv, source documentation, docs/, tests/, or output/project2-visible-output.json.

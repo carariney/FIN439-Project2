@@ -1,0 +1,362 @@
+{
+  "status": "completed",
+  "inputs": {
+    "data_cutoff": "2026-09 period label",
+    "window_monthly_returns": 59,
+    "inflation_assumption": 0.025,
+    "proxy_return_target": 0.065,
+    "reserve_minimum": 0.03,
+    "turnover_limit": 0.25,
+    "transaction_cost_bps": 10,
+    "transaction_cost_treatment": "One-time implementation cost; five-year annualized drag shown only as an illustrative proxy.",
+    "starting_weights": {
+      "BIL": 0.0,
+      "IEF": 0.0,
+      "AGG": 0.4,
+      "ACWI": 0.6
+    }
+  },
+  "portfolios": {
+    "Equal weight": {
+      "status": "COMPARISON ONLY",
+      "weights": {
+        "BIL": 0.25,
+        "IEF": 0.25,
+        "AGG": 0.25,
+        "ACWI": 0.25
+      },
+      "metrics": {
+        "return": 0.0318996873178527,
+        "volatility": 0.0669895096932142,
+        "reserve": 0.25,
+        "gross_annual_return": 0.0318996873178527,
+        "one_time_implementation_cost": 0.0005,
+        "first_year_return_after_cost": 0.0313996873178527,
+        "five_year_annualized_cost_drag": 0.00010002000600206618,
+        "five_year_net_return_proxy": 0.03179966731185063
+      },
+      "benchmark_relative": {
+        "return": -0.03392581499199973,
+        "volatility": -0.04274755016280392
+      },
+      "trade": {
+        "turnover": 0.5,
+        "cost": 0.0005
+      },
+      "verdicts": [
+        {
+          "Rule": "Weights sum to 100%",
+          "Verdict": "PASS",
+          "Reason": "Arithmetic check."
+        },
+        {
+          "Rule": "Long-only / no borrowing / direct derivatives",
+          "Verdict": "PASS",
+          "Reason": "All model weights are non-negative; ETF look-through is not assessed."
+        },
+        {
+          "Rule": "3% BIL reserve",
+          "Verdict": "PASS",
+          "Reason": "BIL only is reserve-eligible; IEF is not treated as cash."
+        },
+        {
+          "Rule": "Modeled five-year net return proxy",
+          "Verdict": "FAIL",
+          "Reason": "Historical gross mean less annualized one-time implementation-cost drag; not proof of CPI + 4% achievement."
+        },
+        {
+          "Rule": "Annual one-way turnover limit",
+          "Verdict": "FAIL",
+          "Reason": "From the stated starting weights; approval may be required if exceeded."
+        },
+        {
+          "Rule": "8% nonexempt issuer exposure",
+          "Verdict": "NOT VERIFIED",
+          "Reason": "ETF-level ticker data do not establish issuer look-through or exemption evidence."
+        },
+        {
+          "Rule": "90% redeemable within five business days",
+          "Verdict": "NOT VERIFIED",
+          "Reason": "No execution, settlement, or ETF liquidity evidence is bundled."
+        },
+        {
+          "Rule": "Seven-year horizon",
+          "Verdict": "NOT VERIFIED",
+          "Reason": "Investor horizon cannot be tested from market data."
+        },
+        {
+          "Rule": "Rolling five-year CPI + 4%, net of costs",
+          "Verdict": "NOT VERIFIED",
+          "Reason": "CPI series, cost history, and five-year realized periods are not in this model."
+        },
+        {
+          "Rule": "Calendar-year loss rule",
+          "Verdict": "NOT VERIFIED",
+          "Reason": "CIO has not defined the loss measure or breach response."
+        }
+      ]
+    },
+    "Inverse volatility": {
+      "status": "COMPARISON ONLY",
+      "weights": {
+        "BIL": 0.8540471641385972,
+        "IEF": 0.05431940145154474,
+        "AGG": 0.06345424309606199,
+        "ACWI": 0.028179191313796113
+      },
+      "metrics": {
+        "return": 0.033201463069923665,
+        "volatility": 0.013363192594279491,
+        "reserve": 0.8540471641385972,
+        "gross_annual_return": 0.033201463069923665,
+        "one_time_implementation_cost": 0.000908366565590142,
+        "first_year_return_after_cost": 0.03229309650433352,
+        "five_year_annualized_cost_drag": 0.00018173935950327458,
+        "five_year_net_return_proxy": 0.03301972371042039
+      },
+      "benchmark_relative": {
+        "return": -0.032624039239928765,
+        "volatility": -0.09637386726173862
+      },
+      "trade": {
+        "turnover": 0.9083665655901421,
+        "cost": 0.000908366565590142
+      },
+      "verdicts": [
+        {
+          "Rule": "Weights sum to 100%",
+          "Verdict": "PASS",
+          "Reason": "Arithmetic check."
+        },
+        {
+          "Rule": "Long-only / no borrowing / direct derivatives",
+          "Verdict": "PASS",
+          "Reason": "All model weights are non-negative; ETF look-through is not assessed."
+        },
+        {
+          "Rule": "3% BIL reserve",
+          "Verdict": "PASS",
+          "Reason": "BIL only is reserve-eligible; IEF is not treated as cash."
+        },
+        {
+          "Rule": "Modeled five-year net return proxy",
+          "Verdict": "FAIL",
+          "Reason": "Historical gross mean less annualized one-time implementation-cost drag; not proof of CPI + 4% achievement."
+        },
+        {
+          "Rule": "Annual one-way turnover limit",
+          "Verdict": "FAIL",
+          "Reason": "From the stated starting weights; approval may be required if exceeded."
+        },
+        {
+          "Rule": "8% nonexempt issuer exposure",
+          "Verdict": "NOT VERIFIED",
+          "Reason": "ETF-level ticker data do not establish issuer look-through or exemption evidence."
+        },
+        {
+          "Rule": "90% redeemable within five business days",
+          "Verdict": "NOT VERIFIED",
+          "Reason": "No execution, settlement, or ETF liquidity evidence is bundled."
+        },
+        {
+          "Rule": "Seven-year horizon",
+          "Verdict": "NOT VERIFIED",
+          "Reason": "Investor horizon cannot be tested from market data."
+        },
+        {
+          "Rule": "Rolling five-year CPI + 4%, net of costs",
+          "Verdict": "NOT VERIFIED",
+          "Reason": "CPI series, cost history, and five-year realized periods are not in this model."
+        },
+        {
+          "Rule": "Calendar-year loss rule",
+          "Verdict": "NOT VERIFIED",
+          "Reason": "CIO has not defined the loss measure or breach response."
+        }
+      ]
+    },
+    "Unconstrained minimum volatility (committee approval required)": {
+      "status": "EXCEEDS TURNOVER WITHOUT APPROVAL",
+      "weights": {
+        "BIL": 0.6000000000000001,
+        "IEF": 0.0,
+        "AGG": 0.0,
+        "ACWI": 0.4
+      },
+      "metrics": {
+        "return": 0.06694431459603875,
+        "volatility": 0.0603424277685631,
+        "reserve": 0.6000000000000001,
+        "gross_annual_return": 0.06694431459603875,
+        "one_time_implementation_cost": 0.0006,
+        "first_year_return_after_cost": 0.06634431459603875,
+        "five_year_annualized_cost_drag": 0.00012002881037231905,
+        "five_year_net_return_proxy": 0.06682428578566643
+      },
+      "benchmark_relative": {
+        "return": 0.0011188122861863214,
+        "volatility": -0.049394632087455016
+      },
+      "trade": {
+        "turnover": 0.6,
+        "cost": 0.0006
+      },
+      "verdicts": [
+        {
+          "Rule": "Weights sum to 100%",
+          "Verdict": "PASS",
+          "Reason": "Arithmetic check."
+        },
+        {
+          "Rule": "Long-only / no borrowing / direct derivatives",
+          "Verdict": "PASS",
+          "Reason": "All model weights are non-negative; ETF look-through is not assessed."
+        },
+        {
+          "Rule": "3% BIL reserve",
+          "Verdict": "PASS",
+          "Reason": "BIL only is reserve-eligible; IEF is not treated as cash."
+        },
+        {
+          "Rule": "Modeled five-year net return proxy",
+          "Verdict": "PASS",
+          "Reason": "Historical gross mean less annualized one-time implementation-cost drag; not proof of CPI + 4% achievement."
+        },
+        {
+          "Rule": "Annual one-way turnover limit",
+          "Verdict": "FAIL",
+          "Reason": "From the stated starting weights; approval may be required if exceeded."
+        },
+        {
+          "Rule": "8% nonexempt issuer exposure",
+          "Verdict": "NOT VERIFIED",
+          "Reason": "ETF-level ticker data do not establish issuer look-through or exemption evidence."
+        },
+        {
+          "Rule": "90% redeemable within five business days",
+          "Verdict": "NOT VERIFIED",
+          "Reason": "No execution, settlement, or ETF liquidity evidence is bundled."
+        },
+        {
+          "Rule": "Seven-year horizon",
+          "Verdict": "NOT VERIFIED",
+          "Reason": "Investor horizon cannot be tested from market data."
+        },
+        {
+          "Rule": "Rolling five-year CPI + 4%, net of costs",
+          "Verdict": "NOT VERIFIED",
+          "Reason": "CPI series, cost history, and five-year realized periods are not in this model."
+        },
+        {
+          "Rule": "Calendar-year loss rule",
+          "Verdict": "NOT VERIFIED",
+          "Reason": "CIO has not defined the loss measure or breach response."
+        }
+      ]
+    },
+    "Turnover-constrained minimum volatility": {
+      "status": "FEASIBLE",
+      "weights": {
+        "BIL": 0.25,
+        "IEF": 0.0,
+        "AGG": 0.2,
+        "ACWI": 0.55
+      },
+      "metrics": {
+        "return": 0.07018117770703068,
+        "volatility": 0.09208766011719834,
+        "reserve": 0.25,
+        "gross_annual_return": 0.07018117770703068,
+        "one_time_implementation_cost": 0.00024999999999999995,
+        "first_year_return_after_cost": 0.06993117770703068,
+        "five_year_annualized_cost_drag": 5.0005000750141804e-05,
+        "five_year_net_return_proxy": 0.07013117270628054
+      },
+      "benchmark_relative": {
+        "return": 0.004355675397178252,
+        "volatility": -0.01764939973881978
+      },
+      "trade": {
+        "turnover": 0.24999999999999997,
+        "cost": 0.00024999999999999995
+      },
+      "verdicts": [
+        {
+          "Rule": "Weights sum to 100%",
+          "Verdict": "PASS",
+          "Reason": "Arithmetic check."
+        },
+        {
+          "Rule": "Long-only / no borrowing / direct derivatives",
+          "Verdict": "PASS",
+          "Reason": "All model weights are non-negative; ETF look-through is not assessed."
+        },
+        {
+          "Rule": "3% BIL reserve",
+          "Verdict": "PASS",
+          "Reason": "BIL only is reserve-eligible; IEF is not treated as cash."
+        },
+        {
+          "Rule": "Modeled five-year net return proxy",
+          "Verdict": "PASS",
+          "Reason": "Historical gross mean less annualized one-time implementation-cost drag; not proof of CPI + 4% achievement."
+        },
+        {
+          "Rule": "Annual one-way turnover limit",
+          "Verdict": "PASS",
+          "Reason": "From the stated starting weights; approval may be required if exceeded."
+        },
+        {
+          "Rule": "8% nonexempt issuer exposure",
+          "Verdict": "NOT VERIFIED",
+          "Reason": "ETF-level ticker data do not establish issuer look-through or exemption evidence."
+        },
+        {
+          "Rule": "90% redeemable within five business days",
+          "Verdict": "NOT VERIFIED",
+          "Reason": "No execution, settlement, or ETF liquidity evidence is bundled."
+        },
+        {
+          "Rule": "Seven-year horizon",
+          "Verdict": "NOT VERIFIED",
+          "Reason": "Investor horizon cannot be tested from market data."
+        },
+        {
+          "Rule": "Rolling five-year CPI + 4%, net of costs",
+          "Verdict": "NOT VERIFIED",
+          "Reason": "CPI series, cost history, and five-year realized periods are not in this model."
+        },
+        {
+          "Rule": "Calendar-year loss rule",
+          "Verdict": "NOT VERIFIED",
+          "Reason": "CIO has not defined the loss measure or breach response."
+        }
+      ]
+    }
+  },
+  "window_sensitivity": {
+    "status": "ASSESSED",
+    "comparison_window_monthly_returns": 36,
+    "base_weights": {
+      "BIL": 0.25,
+      "IEF": 0.0,
+      "AGG": 0.2,
+      "ACWI": 0.55
+    },
+    "comparison_weights": {
+      "BIL": 0.25,
+      "IEF": 0.0,
+      "AGG": 0.4,
+      "ACWI": 0.35000000000000003
+    },
+    "largest_allocation_change": 0.2,
+    "material_threshold": 0.2
+  },
+  "recommendation_basis": "STOP: allocation changes by at least 20 percentage points between 59- and 36-return windows; estimation instability requires committee resolution.",
+  "stopping_conditions": [
+    "Turnover-constrained strategy is INFEASIBLE.",
+    "Any hard modeled mandate rule is FAIL.",
+    "Largest allocation change across 36- versus 59-return windows is at least 20 percentage points."
+  ],
+  "unconstrained_comparison_note": "The unconstrained minimum-volatility result is retained only to show the effect of waiving turnover; it is not a compliant recommendation."
+}
