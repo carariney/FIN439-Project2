@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import pytest
+import json
 from pathlib import Path
 from portfolio import (ValidationError, Estimates, TICKERS, BENCHMARK, validate_weights, validate_covariance, monthly_returns, estimate, portfolio_metrics, grid_minimum_volatility, turnover_and_cost, net_return_metrics, mandate_verdicts, load_prices, compare_portfolios, pair_correlation, stress_pair_correlation, apply_correlation_adjustment)
 from asof import lab16_known_answers
@@ -14,7 +15,7 @@ def sample_prices(n=60):
 
 def test_lab13_known_answers_and_negative_weight_probe():
     metrics = {"reserve": .03, "return": .07, **net_return_metrics(.07, 0)}
-    assert mandate_verdicts(pd.Series([.03,0,0,.97], index=TICKERS), metrics, .065, .1, .25).query("Rule == '3% BIL reserve'").iloc[0].Verdict == "PASS"
+    assert mandate_verdicts(pd.Series([.03,0,0,.97], index=TICKERS), metrics, .065, .03, .1, .25).query("Rule == '3% BIL reserve'").iloc[0].Verdict == "PASS"
     with pytest.raises(ValidationError): validate_weights({"BIL": -.02,"IEF":0,"AGG":.38,"ACWI":.64})
 
 def test_lab14_arithmetic_and_independent_metric():
@@ -125,3 +126,26 @@ def test_cli_default_and_argument_validation_without_running_locked_scenario():
     assert custom.output == Path("output/safe-parser-test.json")
     with pytest.raises(SystemExit):
         parse_args(["--reserve-minimum", "1.01"])
+
+
+def test_mandate_reserve_verdict_uses_actual_scenario_threshold():
+    weights = pd.Series([.25, 0, .20, .55], index=TICKERS)
+    metrics = {"reserve": .25, "return": .07, **net_return_metrics(.07, 0)}
+    three_percent = mandate_verdicts(weights, metrics, .065, .03, .25, .25)
+    thirty_percent = mandate_verdicts(weights, metrics, .065, .30, .25, .25)
+    assert three_percent.query("Rule == '3% BIL reserve'").iloc[0].Verdict == "PASS"
+    assert thirty_percent.query("Rule == '30% BIL reserve'").iloc[0].Verdict == "FAIL"
+
+
+def test_default_results_match_frozen_baseline_without_rewriting_output():
+    root = Path(__file__).parents[1]
+    baseline = json.loads((root / "output/project2-visible-output.json").read_text())
+    current = compare_portfolios(estimate(load_prices(root / "prices.csv")), .065, .03, BENCHMARK, .25, 10)
+    for name, saved in baseline["portfolios"].items():
+        actual = current[name]
+        assert actual["status"] == saved["status"]
+        if actual["status"] != "INFEASIBLE":
+            assert actual["weights"].to_dict() == pytest.approx(saved["weights"])
+            for metric in ("gross_annual_return", "five_year_net_return_proxy", "volatility", "reserve"):
+                assert actual["metrics"][metric] == pytest.approx(saved["metrics"][metric])
+            assert actual["trade"] == pytest.approx(saved["trade"])

@@ -246,11 +246,15 @@ def net_return_metrics(gross_annual_return: float, one_time_cost: float, horizon
     }
 
 
-def mandate_verdicts(weights: pd.Series, metrics: dict[str, float], modeled_target: float, turnover: float, turnover_limit: float) -> pd.DataFrame:
+def mandate_verdicts(weights: pd.Series, metrics: dict[str, float], modeled_target: float, reserve_minimum: float, turnover: float, turnover_limit: float) -> pd.DataFrame:
+    """Report mandate checks using the actual scenario reserve requirement."""
+    if not 0 <= reserve_minimum <= 1:
+        raise ValidationError("Reserve minimum must be a decimal rate between 0 and 1.")
+    reserve_label = f"{reserve_minimum:.0%}" if np.isclose(reserve_minimum * 100, round(reserve_minimum * 100)) else f"{reserve_minimum:.1%}"
     checks = [
         ("Weights sum to 100%", "PASS", "Arithmetic check."),
         ("Long-only / no borrowing / direct derivatives", "PASS", "All model weights are non-negative; ETF look-through is not assessed."),
-        ("3% BIL reserve", "PASS" if metrics["reserve"] >= 0.03 - 1e-12 else "FAIL", "BIL only is reserve-eligible; IEF is not treated as cash."),
+        (f"{reserve_label} BIL reserve", "PASS" if metrics["reserve"] >= reserve_minimum - 1e-12 else "FAIL", "BIL only is reserve-eligible; IEF is not treated as cash."),
         ("Modeled five-year net return proxy", "PASS" if metrics["five_year_net_return_proxy"] >= modeled_target - 1e-12 else "FAIL", "Historical gross mean less annualized one-time implementation-cost drag; not proof of CPI + 4% achievement."),
         ("Annual one-way turnover limit", "PASS" if turnover <= turnover_limit + 1e-12 else "FAIL", "From the stated starting weights; approval may be required if exceeded."),
         ("8% nonexempt issuer exposure", "NOT VERIFIED", "ETF-level ticker data do not establish issuer look-through or exemption evidence."),
@@ -262,12 +266,12 @@ def mandate_verdicts(weights: pd.Series, metrics: dict[str, float], modeled_targ
     return pd.DataFrame(checks, columns=["Rule", "Verdict", "Reason"])
 
 
-def _portfolio_record(weights: pd.Series, estimates: Estimates, return_target: float, starting: pd.Series, turnover_limit: float, cost_bps: float, status: str) -> dict:
+def _portfolio_record(weights: pd.Series, estimates: Estimates, return_target: float, reserve_minimum: float, starting: pd.Series, turnover_limit: float, cost_bps: float, status: str) -> dict:
     metrics = portfolio_metrics(weights, estimates)
     trade = turnover_and_cost(weights, starting, cost_bps)
     metrics.update(net_return_metrics(metrics["return"], trade["cost"]))
     benchmark_metrics = portfolio_metrics(BENCHMARK, estimates)
-    return {"status": status, "weights": weights, "metrics": metrics, "benchmark_relative": {"return": metrics["return"] - benchmark_metrics["return"], "volatility": metrics["volatility"] - benchmark_metrics["volatility"]}, "trade": trade, "verdicts": mandate_verdicts(weights, metrics, return_target, trade["turnover"], turnover_limit)}
+    return {"status": status, "weights": weights, "metrics": metrics, "benchmark_relative": {"return": metrics["return"] - benchmark_metrics["return"], "volatility": metrics["volatility"] - benchmark_metrics["volatility"]}, "trade": trade, "verdicts": mandate_verdicts(weights, metrics, return_target, reserve_minimum, trade["turnover"], turnover_limit)}
 
 
 def compare_portfolios(estimates: Estimates, return_target: float, reserve_minimum: float, starting: pd.Series, turnover_limit: float, cost_bps: float) -> dict[str, dict]:
@@ -279,15 +283,15 @@ def compare_portfolios(estimates: Estimates, return_target: float, reserve_minim
     }
     result: dict[str, dict] = {}
     for name, (weights, status) in portfolios.items():
-        result[name] = _portfolio_record(weights, estimates, return_target, starting, turnover_limit, cost_bps, status)
+        result[name] = _portfolio_record(weights, estimates, return_target, reserve_minimum, starting, turnover_limit, cost_bps, status)
     try:
         unconstrained = grid_minimum_volatility(estimates, return_target, reserve_minimum)
-        result["Unconstrained minimum volatility (committee approval required)"] = _portfolio_record(unconstrained, estimates, return_target, starting, turnover_limit, cost_bps, "EXCEEDS TURNOVER WITHOUT APPROVAL")
+        result["Unconstrained minimum volatility (committee approval required)"] = _portfolio_record(unconstrained, estimates, return_target, reserve_minimum, starting, turnover_limit, cost_bps, "EXCEEDS TURNOVER WITHOUT APPROVAL")
     except ValidationError as exc:
         result["Unconstrained minimum volatility (committee approval required)"] = {"status": "INFEASIBLE", "reason": str(exc)}
     try:
         constrained = grid_minimum_volatility(estimates, return_target, reserve_minimum, starting=starting, turnover_limit=turnover_limit)
-        result["Turnover-constrained minimum volatility"] = _portfolio_record(constrained, estimates, return_target, starting, turnover_limit, cost_bps, "FEASIBLE")
+        result["Turnover-constrained minimum volatility"] = _portfolio_record(constrained, estimates, return_target, reserve_minimum, starting, turnover_limit, cost_bps, "FEASIBLE")
     except ValidationError as exc:
         result["Turnover-constrained minimum volatility"] = {"status": "INFEASIBLE", "reason": str(exc)}
     return result
