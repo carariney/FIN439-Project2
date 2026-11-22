@@ -15,10 +15,11 @@ Pre-run commit hash: To be added to the validation record after committing this 
 
 ## Execute only after the pre-run commit
 
-- Command:
-- Output file/location:
-- Observed change (with units):
-- Comparison to prediction:
-- First broken assumption/unit/sign/date/interface if prediction differed:
-- Final action: `ACTION HOLDS`, `ACTION CHANGES`, or `EVIDENCE INSUFFICIENT`:
+- Command: `python3 run_model.py --reserve-minimum 0.30 --output output/locked-reserve-minimum-030.json`
+- Output file/location: `output/locked-reserve-minimum-030.json`
+- Observed change (with units): Reserve minimum changed from 3% to 30%. The turnover-constrained minimum-volatility optimizer is INFEASIBLE: no 5-percentage-point allocation meets the 30% reserve, modeled return threshold, and 25% one-way turnover limit simultaneously. Therefore no constrained portfolio weights, return, volatility, or turnover are available for comparison. The approval-required unconstrained comparison remains 60% BIL / 40% ACWI with 60% one-way turnover.
+- Comparison to prediction: The expected higher BIL allocation was not observed because the constrained solution became infeasible. The uncertainty about whether return and turnover constraints would remain satisfied was resolved negatively. The expected STOP recommendation remains in place.
+- First broken assumption/unit/sign/date/interface if prediction differed: The prediction implicitly assumed a feasible constrained allocation would exist. The first binding issue is constraint infeasibility, not a unit, sign, date, or interface error.
+- Reporting defect discovered: comparison-portfolio mandate output still hardcodes the label and threshold `3% BIL reserve`; at this 30% scenario it incorrectly reports the 25% BIL equal-weight comparison as passing. The constrained optimizer itself applied the 30% input and reported INFEASIBLE. This defect is documented here and is not fixed in this evidence commit.
+- Final action: `ACTION HOLDS` — STOP; do not relax the return objective or turnover limit without committee action.
 - Post-run commit hash:
