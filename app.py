@@ -12,6 +12,7 @@ st.set_page_config(page_title="Meridian Foundation | Decision Lab", layout="wide
 st.title("Meridian Foundation Portfolio Decision Lab")
 st.caption("Decision question: adopt, pilot, or reject a constrained minimum-volatility ETF process?")
 st.warning("Historical estimates are not forecasts. A PASS on a modeled check is not whole-mandate compliance.")
+st.error("**Committee decision: STOP — defer immediate adoption.** Authorized implementation allocation: **0% pending committee approval**. Primary reason: the modeled turnover-constrained allocation changes by 20 percentage points between the 59-return and 36-return estimation windows. A portfolio can be modeled feasible without being approved for implementation.")
 
 with st.sidebar:
     st.header("Scenario inputs")
@@ -27,7 +28,8 @@ with st.sidebar:
     st.caption("IEF and BIL starting weights are 0%; this is an explicit simplified starting convention.")
 
 st.subheader("Mandate and implementation boundary")
-st.markdown("**Policy:** seven-year horizon; CPI + 4% net of costs over rolling five-year periods; 3% reserve; 60/40 ACWI/AGG reference benchmark; long-only/no borrowing, shorts, or derivatives; 8% nonexempt issuer cap; 25% annual turnover without approval; ≥90% five-business-day redeemability; calendar-year loss rule unresolved.  \\n**Implementation proposal pending CIO approval:** minimize estimated volatility subject to a proxy return threshold, reserve, long-only, and turnover constraints. BIL is the only reserve-eligible ETF; IEF is not labeled cash-equivalent.")
+st.markdown("**Policy:** seven-year horizon; CPI + 4% net of costs over rolling five-year periods; 3% reserve; 60/40 ACWI/AGG reference benchmark; long-only/no borrowing, shorts, or derivatives; 8% nonexempt issuer cap; 25% annual turnover without approval; ≥90% five-business-day redeemability; calendar-year loss rule unresolved.")
+st.markdown("**Implementation proposal pending CIO approval:** minimize estimated volatility subject to a proxy return threshold, reserve, long-only, and turnover constraints. BIL is the only reserve-eligible ETF; IEF is not labeled cash-equivalent.")
 st.info(f"CPI + 4% is shown as {inflation:.1%} + 4.0% = {inflation + .04:.1%}; the separate modeled proxy threshold is {target:.1%}. Neither proves five-year, net-of-cost achievement.")
 
 try:
@@ -56,12 +58,18 @@ except ValidationError as exc:
 st.subheader("Comparison")
 st.caption("Trading costs are one-time implementation costs. ‘Five-year net return proxy’ spreads that one-time cost over five years for comparison only; it is not a recurring annual expense.")
 summary = []
+status_labels = {
+    "COMPARISON ONLY": "Comparison only — not an implementation recommendation",
+    "EXCEEDS TURNOVER WITHOUT APPROVAL": "Approval required — turnover limit exceeded",
+    "FEASIBLE": "Modeled feasible — not committee approved",
+    "INFEASIBLE": "INFEASIBLE",
+}
 for name, item in result.items():
     if item["status"] == "INFEASIBLE":
-        summary.append({"Portfolio": name, "Status": "INFEASIBLE", "Reason": item["reason"]})
+        summary.append({"Portfolio": name, "Status": status_labels[item["status"]], "Reason": item["reason"]})
         continue
     m, trade = item["metrics"], item["trade"]
-    summary.append({"Portfolio": name, "Status": item["status"], "Gross annual return": m["gross_annual_return"], "Five-year net return proxy": m["five_year_net_return_proxy"], "Est. annual volatility": m["volatility"], "BIL reserve": m["reserve"], "Return vs benchmark": item["benchmark_relative"]["return"], "Volatility vs benchmark": item["benchmark_relative"]["volatility"], "One-way turnover": trade["turnover"], "Est. one-time cost": trade["cost"]})
+    summary.append({"Portfolio": name, "Status": status_labels[item["status"]], "Gross annual return": m["gross_annual_return"], "Five-year net return proxy": m["five_year_net_return_proxy"], "Est. annual volatility": m["volatility"], "BIL reserve": m["reserve"], "Return vs benchmark": item["benchmark_relative"]["return"], "Volatility vs benchmark": item["benchmark_relative"]["volatility"], "One-way turnover": trade["turnover"], "Est. one-time cost": trade["cost"]})
 st.dataframe(pd.DataFrame(summary).set_index("Portfolio").style.format({column: "{:.2%}" for column in ["Gross annual return", "Five-year net return proxy", "Est. annual volatility", "BIL reserve", "Return vs benchmark", "Volatility vs benchmark", "One-way turnover", "Est. one-time cost"]}), use_container_width=True)
 
 for name, item in result.items():
@@ -72,7 +80,7 @@ for name, item in result.items():
         st.write("Weights")
         st.dataframe((item["weights"] * 100).rename("Weight %").to_frame().style.format("{:.1f}%"))
         st.write("Mandate tests")
-        st.dataframe(item["verdicts"], use_container_width=True)
+        st.dataframe(item["verdicts"], column_config={"Rule": st.column_config.TextColumn(width="medium"), "Verdict": st.column_config.TextColumn(width="small"), "Reason": st.column_config.TextColumn(width="large")}, hide_index=True, use_container_width=True)
 
 st.subheader("Point-in-time monitoring signal")
 lookback = st.slider("Trailing-return lookback (months)", 3, 24, 12)
@@ -88,7 +96,7 @@ st.caption("Data card: source is the bundled validated CSV; observation period u
 constrained = result["Turnover-constrained minimum volatility"]
 st.subheader("Committee guardrail")
 if constrained["status"] == "INFEASIBLE":
-    st.error("STOP: turnover-constrained optimization is INFEASIBLE. Do not relax the return target or turnover limit automatically.")
+    st.error("**STOP — turnover-constrained optimization is INFEASIBLE.** Do not relax the return target or turnover limit automatically.")
 else:
     failure = constrained["verdicts"].query("Verdict == 'FAIL'")
     largest_change = (constrained["weights"] - starting).abs().max()
@@ -99,12 +107,17 @@ else:
         alternate = compare_portfolios(alternate_estimates, target, reserve, starting, turnover_limit, cost_bps)["Turnover-constrained minimum volatility"]
         st.caption(f"{alternate_window}-return ACWI–AGG correlation: historical {alternate_historical_corr:.2f}; scenario {alternate_scenario_corr:.2f} (same adjustment {correlation_adjustment:+.2f}).")
         if alternate["status"] == "INFEASIBLE":
-            st.error(f"STOP: the {alternate_window}-return estimation window is INFEASIBLE; process is unstable across reasonable windows.")
+            st.error(f"**STOP — the {alternate_window}-return estimation window is INFEASIBLE.** The process is unstable across reasonable windows.")
         else:
             window_change = (constrained["weights"] - alternate["weights"]).abs().max()
-            st.write(f"Window sensitivity: largest turnover-constrained allocation change between {window} and {alternate_window} returns is {window_change:.1%}.")
-            if len(failure) or largest_change > .25 or window_change >= .20 - 1e-12:
-                st.error(f"SUSPEND / escalate: {len(failure)} modeled rule failure(s), largest initial allocation change {largest_change:.1%}, or window-instability threshold breached. Do not adopt automatically.")
+            st.write(f"Estimation-window sensitivity: largest turnover-constrained allocation change between {window} and {alternate_window} returns is {window_change:.1%}.")
+            st.caption(f"Separate transition diagnostic: largest allocation change from the stated starting portfolio is {largest_change:.1%}.")
+            if window_change >= .20 - 1e-12:
+                st.error(f"**STOP — estimation-window instability.** The {window_change:.1%} allocation change meets or exceeds the 20.0% stopping threshold. Do not adopt automatically.")
+            elif len(failure):
+                st.error(f"**STOP — modeled hard-mandate failure.** {len(failure)} modeled rule failure(s) require escalation.")
+            elif largest_change > .25:
+                st.error(f"**STOP — initial allocation change is {largest_change:.1%}, above the 25.0% transition diagnostic.**")
             else:
                 st.warning("PILOT ONLY: modeled constraints pass, but material policy rules remain NOT VERIFIED. Committee action is still required.")
     except ValidationError as exc:
