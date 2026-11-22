@@ -22,4 +22,6 @@ Pre-run commit hash: To be added to the validation record after committing this 
 - First broken assumption/unit/sign/date/interface if prediction differed: The prediction implicitly assumed a feasible constrained allocation would exist. The first binding issue is constraint infeasibility, not a unit, sign, date, or interface error.
 - Reporting defect discovered: comparison-portfolio mandate output still hardcodes the label and threshold `3% BIL reserve`; at this 30% scenario it incorrectly reports the 25% BIL equal-weight comparison as passing. The constrained optimizer itself applied the 30% input and reported INFEASIBLE. This defect is documented here and is not fixed in this evidence commit.
 - Final action: `ACTION HOLDS` — STOP; do not relax the return objective or turnover limit without committee action.
-- Post-run commit hash:
+- Git history for this record: original prediction commit `49716cf`; final pre-run freeze `d463d00ec290be407ac79d26475f29dbfe21b0a7`. The blank pre-run field above is retained unchanged because it is part of the committed Prediction section.
+- Post-run commit hash: `bab663c095b1937fa1cf61201ad49fad41e0e2f9`
+- Subsequent reporting correction (not part of original locked output): `a0277cb238edb8adeb880b1f70166cea5922c152`.

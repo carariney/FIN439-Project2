@@ -29,7 +29,7 @@ python3 -m streamlit run app.py
 python3 run_model.py --reserve-minimum 0.04 --output output/example-scenario.json
 ```
 
-The final locked protocol uses the same syntax but must not be executed until the student has independently written and committed the AI-off prediction.
+The completed locked protocol used the same syntax with a 30% reserve minimum and saved separate evidence without overwriting the baseline. See the [locked record](docs/locked-changed-input-record.md) and [manifest](docs/submission-manifest.md). Do not execute additional changed-input cases without a new independently authored and committed prediction.
 
 The ACWI–AGG correlation control is an **adjustment**, not an absolute replacement. A zero adjustment uses each estimation window's own historical correlation; the same adjustment is then applied and validated separately to the 59- and 36-return windows. A non-positive-semidefinite scenario is displayed as unavailable and is never repaired.
 
