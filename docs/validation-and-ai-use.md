@@ -42,7 +42,6 @@ The turnover-constrained optimizer was **INFEASIBLE**: no grid portfolio simulta
 
 ## Pending manual evidence
 
-- A checksum or other independent preservation record for the original `prices.csv`.
 - CIO clarification of calendar-year loss and optimization priority.
 - Liquidity/redemption, issuer-exemption/look-through, derivative exposure, and transaction-cost evidence.
 - Publication-time evidence for the monthly Yahoo adjusted-price observations; period labels alone do not establish point-in-time availability.
