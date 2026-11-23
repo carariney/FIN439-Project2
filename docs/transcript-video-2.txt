@@ -1,19 +1,30 @@
 FIN 439 Project 2 — Video 2: Code Walkthrough & Validation
-Duration: 3:43
-Source: YouTube automatic transcript supplied by the presenter; timestamps approximate.
+Duration: 3:56
+Source: YouTube automatic captions, corrected for obvious transcription errors. Timestamps are approximate.
 
-[00:00] My application uses portfolio.py for financial calculations, asof.py for data checks, run_model.py for reproducible outputs, and app.py for the Streamlit interface.
-
-[00:26] So the model uses 60 monthly price observations for BIL, IEF, AGG, and ACWI, producing 59 monthly returns. The load_prices function validates the data. monthly_returns calculates returns, and estimate calculates annualized historical returns and the covariance matrix. These are historical estimates, not forecasts of future performance.
-
-[01:05] Here, the optimizer searches allocations in five-percentage-point increments and selects the feasible portfolio with the lowest estimated volatility. Its constraints include a 6.5% modeled gross return threshold, a minimum BIL reserve, and a 25% one-way turnover limit. Turnover is half the sum of absolute weight changes. If no allocation satisfies the constraints, the model reports infeasibility rather than relaxing them.
-
-[01:49] The application compares equal-weight, inverse-volatility, unconstrained minimum-volatility, and turnover-constrained portfolios. Each receives its own return, volatility, turnover, and mandate verdicts. The default constrained allocation is 25% BIL, 20% AGG, and 55% ACWI, with a modeled return of 7.02%, volatility of 9.21%, and 25% turnover.
-
-[02:24] The asof.py module checks data provenance and timing to flag potential look-ahead issues. The automated tests cover calculations, constraints, infeasibility, and sensitivity. They also verified the correction to the reserve-reporting error identified during my locked test. All 15 tests passed in the final review.
-
-[02:53] The README documents how to install dependencies, run the tests, reproduce model output, and launch Streamlit. The application uses a fixed local dataset and preserves the original locked scenario output. Its limitations include historical returns that are not reliable forecasts, incomplete proof of point-in-time data availability, and unverified issuer-level exposure and actual liquidity.
-
-[03:27] Because the portfolio is sensitive to the estimation window, the final recommendation remains STOP, with 0% authorized for immediate implementation.
-
-[03:38] Thank you.
+[00:00] I used Codex for coding, testing, and documentation, and I independently evaluated the results and made the final recommendation.
+[00:08] Just a disclaimer that this project is educational, not investment advice.
+[00:15] My application uses portfolio.py for financial calculations, asof.py for data checks, and run_model.py
+[00:26] for reproducible outputs, and app.py for the Streamlit interface.
+[00:39] So the model uses 60 monthly price observations for BIL, IEF, AGG, and ACWI,
+[00:50] producing 59 monthly returns. The load_prices function validates the data.
+[00:56] monthly_returns calculates returns, and estimate calculates annualized
+[01:03] historical returns and the covariance matrix. These are historical estimates, not forecasts of future performance.
+[01:19] Here the optimizer searches allocations in five-percentage-point increments and
+[01:27] selects the feasible portfolio with the lowest estimated volatility. Its constraints include a
+[01:34] 6.5% modeled gross return threshold, a minimum BIL reserve, and a 25% one-way
+[01:45] turnover limit. Turnover is half the sum of absolute weight changes. If no allocation satisfies the constraints,
+[01:53] the model reports infeasibility rather than relaxing them.
+[02:03] The application compares equal weight, inverse volatility, unconstrained minimum volatility, and turnover-
+[02:10] constrained portfolios. Each receives its own return, volatility, turnover, and mandate verdicts. The default
+[02:19] constrained allocation is 25% BIL, 20% AGG, and 55% ACWI with a modeled return of
+[02:28] 7.02%, volatility of 9.21%, and 25% turnover.
+[02:38] The asof.py module checks data provenance and timing to flag potential
+[02:44] look-ahead issues. The automated tests cover calculations, constraints, infeasibility, and sensitivity. They also
+[02:53] verify the correction to the reserve reporting error identified during my locked tests. All 15 tests pass in the final review.
+[03:07] The README documents how to install dependencies, run the tests, and reproduce model output, as well
+[03:16] as launch Streamlit. The application uses a fixed local dataset and preserves the original locked scenario
+[03:25] output. Its limitations include historical returns that are not reliable forecasts, incomplete proof of point-in-
+[03:34] time data availability, and unverified issuer-level exposure and actual liquidity.
+[03:40] Because the portfolio is sensitive to the estimation window, the final recommendation remains STOP, with 0% authorized for immediate implementation.
+[03:52] Thank you.

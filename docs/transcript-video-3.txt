@@ -1,23 +1,36 @@
-VIDEO 3 — INVESTMENT COMMITTEE DEFENSE
+FIN 439 Project 2 — Video 3: Investment Committee Presentation
+Duration: 4:15
+Source: YouTube automatic captions, corrected for obvious transcription errors. Timestamps are approximate.
 
-Now that I've opened my live workbench, I'll start by showing how my valuation responds to changes in operating assumptions. The base case uses 5.95% revenue growth, a 45.5% gross margin, a 10% discount rate, and 3% terminal growth, producing a value of $138.88 per share.
-
-If the gross margin decreases to, let's say, 43.5%, and I run the workbench here, this reduces the valuation to approximately $131.28 per share. I'll reset the model to restore the original.
-
-This demonstrates how the model handles an invalid assumption. Terminal growth is set above the discount rate, and the workbench displays an error rather than producing a valuation.
-
-Now opening my presentation. My recommendation is Watch/Defer rather than initiating a position in Williams-Sonoma. As of August 31, 2026, the stock price was $228.25. My DCF range is $123 to $156.69 per share, and both comparable-company valuation methods also fall below the market price. Based on those results, I don't see an attractive entry point.
-
-Williams-Sonoma reported 6.2% comparable-brand revenue growth and maintained a net-cash position. However, second-quarter earnings included a $0.74-per-share benefit from tariff refunds. I excluded that benefit from recurring earnings expectations because it might not continue.
-
-My five-year forecast projects revenue increasing from approximately $8.27 billion in 2026 to $9.45 billion in 2030. The three financial statements are linked, and the model checks that they reconcile. Terminal value represents about 73% of enterprise value, making the DCF sensitive to long-term assumptions.
-
-I developed three scenarios to evaluate different operating outcomes. The downside case assumes weaker growth and margin pressure, producing a value of $123 per share and supporting Do Not Initiate. My base case is $138.88, while the high case is $156.69. Even the high case remains below the market price, supporting my recommendation to wait.
-
-I tested discount rates from 9% to 11% and terminal growth rates from 2% to 4%, producing values between approximately $113 and $185 per share. At my base assumptions, the market price would require about 6.28% perpetual growth, compared with the 3% in my model. This shows how optimistic market expectations would need to be.
-
-The main risks are tariff and sourcing costs, weaker consumer demand, and uncertainty surrounding cash flow. I would reconsider investing if Williams-Sonoma demonstrates sustainable margins and demand, maintains sufficient operating cash, and an updated valuation offers a margin of safety.
-
-My recommendation is to keep Williams-Sonoma on the watch list and reassess after the next meaningful operating update, focusing on demand, margins, tariff costs, and cash conversion.
-
-Thank you.
+[00:00] I used Codex for coding, testing, and documentation, and I independently evaluated the results and made the final recommendation.
+[00:08] Just a disclaimer that this project is educational, not investment advice.
+[00:14] My recommendation to the Meridian Foundation Investment Committee is to defer adoption of this portfolio process
+[00:22] and authorize 0% for immediate implementation.
+[00:26] The committee's decision today is whether this process is ready for investment. My conclusion is that it
+[00:32] isn't, despite passing several modeled constraints.
+[00:39] The foundation has a 7-year investment horizon and uses a 60% ACWI and 40% AGG
+[00:48] reference benchmark. The application compares equal weight, inverse volatility, unconstrained minimum
+[00:55] volatility, and turnover-constrained strategies. The unconstrained minimum volatility portfolio allocates 60% to
+[01:03] BIL and 40% to ACWI, but requires 60% turnover, exceeding the foundation's 25%
+[01:11] limit. The constrained alternative allocates 25% to BIL, 20% to AGG, and 55%
+[01:20] to ACWI. Its modeled gross annual return is 7.02%, with 9.21% annualized
+[01:28] volatility. This is a feasible candidate.
+[01:36] The candidate meets the modeled 6.5% return threshold, 3% reserve minimum, and 25% turnover limit. However, its
+[01:45] turnover is exactly at the maximum, and the application estimates additional one-time trading costs. The
+[01:52] foundation's actual objective is CPI plus 4% net of costs, measured over
+[01:58] rolling 5-year periods. The 6.5% historical return threshold is only a modeling proxy, not proof of meeting
+[02:07] that objective. The committee also needs verification of issuer exposure, liquidity, and the unresolved calendar-year loss rule.
+[02:18] One important feature is the ability to test whether the decision remains stable
+[02:26] when assumptions change. Here I'll switch the estimation window from 59 to 36 monthly returns.
+[02:39] It's running now.
+[02:42] Here the constrained allocation changes to 25% BIL, 40% AGG, and 35% ACWI.
+[02:53] That's a 20-percentage-point change in the largest weight difference. The application flags this because it meets
+[03:00] the predefined stopping threshold. I'm returning to the original 59-
+[03:07] month setting. The result is still STOP because the instability remains unresolved.
+[03:22] So before reconsidering a pilot, I would require verified issuer exposure and 5-day liquidity, clarification of the
+[03:31] calendar-year loss rule, and stronger evidence that the portfolio is stable across estimation windows. During
+[03:38] monitoring, I would stop the process if the reserve falls below 3%, turnover exceeds 25%, optimization becomes
+[03:47] infeasible, data provenance fails, or allocation instability reaches 20 percentage points. Any future pilot
+[03:55] would require separate committee authorization. The application does not authorize trades automatically. My
+[04:02] committee ask is to confirm the 0% implementation range and defer adoption until these conditions are satisfied.
+[04:10] Thank you.
