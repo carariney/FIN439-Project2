@@ -9,6 +9,7 @@
 - The correlation-stress regression uses each window's own historical ACWI–AGG correlation plus the same adjustment; an invalid covariance scenario is surfaced rather than repaired.
 - `run_model.py` validates `--reserve-minimum` as a decimal rate and can write a scenario to a separate `--output` path without replacing baseline output.
 - Latest executed test result: **15 passed**. This is reported from the most recent validated test run; no separate test log was created or claimed.
+- `prices.csv` SHA-256: `df1ca3ff8e9f4f12680adbb1dce73fd8e9cd61775bddde4cd93b26e57b6aa876`. Verify from the repository root with `shasum -a 256 prices.csv`; the result must match exactly before using the frozen input.
 
 ## Git evidence
 

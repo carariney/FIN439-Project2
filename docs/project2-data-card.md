@@ -33,3 +33,5 @@ The ACWI–AGG correlation stress is a model-assumption adjustment around each e
 ## Economic sanity check
 
 The Lab 16 gate establishes what could have been known, not whether it is economically credible. A provenance-valid observation that implies a large unexplained one-month price movement still requires source, units, corporate-action, and market-plausibility review before it affects a decision.
+
+**Concrete teaching example — not portfolio input:** suppose a validly published ETF observation moves from $100 to $1,500 in one month, implying a +1,400% simple return, with no documented split, distribution adjustment, currency/unit change, or market event. It can pass the provenance gate because it was available by the decision date, yet it is economically implausible enough to quarantine pending source and corporate-action review. This example does not alter `prices.csv`, the signal, or any portfolio result.

@@ -6,6 +6,8 @@ The analysis and decision are mine, for education rather than investment advice.
 
 This Streamlit application compares equal-weight, inverse-volatility, an approval-required unconstrained minimum-volatility comparison, and a transparent five-percentage-point turnover-constrained minimum-volatility allocation of BIL, IEF, AGG, and ACWI. It fails closed: it uses `prices.csv` at repository root and will not download substitute data.
 
+`mandate.py` is retained as historical Lab 13 teaching material and is not the Project 2 portfolio engine. Project 2 ETF calculations, including the BIL-only reserve-eligibility rule, are governed by `portfolio.py`.
+
 ## Current evidence status
 
 The bundled [`prices.csv`](prices.csv) and [`Project-2-Data-Sources.md`](Project-2-Data-Sources.md) define the frozen input: 60 monthly period labels from October 2021–September 2026 and `Date,BIL,IEF,AGG,ACWI`. A 54-row March-2026 file stops and reports April–September as missing. Labels are periods, not confirmed publication/trade timestamps.
